@@ -18,7 +18,13 @@
 		/>
 		<link rel="stylesheet" type="text/css" href="styles.css" />
 		<script async src="/script.js"></script>
-		<script>
+		<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+		<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+		<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+		
+
+		<script type="text/babel">
 			function renderComments(data) { 
 				let html = ``;
 				data.forEach(f => {
@@ -46,16 +52,30 @@
 					</div>
 					<div class="comment__actions">
 						<div>
-							<button class="comment__button" onclick="upvoteComment('${f.id}')">&#9650; Upvote</button>
+							<span id="upvote"></span>
 							<button class="comment__button">Reply</button>
 						</div>
 					</div>`
 
 				html += comment;
 				})
+				// <button class="comment__button" onclick="upvoteComment('${f.id}')">&#9650; Upvote</button>
+
 				const container = document.getElementById('commentContainer');
 				container.innerHTML = html;
+				class ResCaption extends React.Component{
+					render() {
+						return(
+							<button class="comment__button" onClick={() => upvoteComment('asd')}>&#9650; Upvote</button>
+						)
+					}
 			}
+
+			const upvote = document.getElementById('upvote');
+			ReactDOM.render(<ResCaption/>, upvote);
+			}
+
+			
 
 			function getComments() {
 				fetch("http://localhost:3000/comments")
@@ -94,6 +114,18 @@
 			}
 
 			getComments();
+		</script>
+		<script type = "text/babel">
+			// class ResCaption extends React.Component{
+			// 	render(){
+			// 		return(
+			// 			<div>asd</div>
+			// 		)
+			// 	}
+			// }
+
+			// const upvote = document.getElementById('upvote');
+			// ReactDOM.render(<ResCaption/>, upvote);
 		</script>
 		<title></title>
 	</head>
