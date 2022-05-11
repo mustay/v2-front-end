@@ -18,6 +18,90 @@
 		/>
 		<link rel="stylesheet" type="text/css" href="styles.css" />
 		<script async src="/script.js"></script>
+		<script>
+			function renderComments(data) { 
+				let html = ``;
+				data.forEach(f => {
+					const comment = `<div class="comments-container">
+						<div class="comment__header">
+							<div class="comment__header-avatar">
+								<div class="comment__image-container">
+									<img class="comment__image" src="user1.jpeg" />
+								</div>
+							</div>
+
+							<div class="comment__details">
+								<div class="comment__username">
+									<div class="">${f.user}</div>
+								</div>
+								<div class="comment__separator">&#8226;</div>
+								<div class="comment__date">${f.time}</div>
+							</div>
+						</div>
+					</div>
+					<div class="comment__text">
+						<p>
+							${f.text}
+						</p>
+					</div>
+					<div class="comment__actions">
+						<div>
+							<button class="comment__button" onclick="upvoteComment('${f.id}')">&#9650; Upvote</button>
+							<button class="comment__button">Reply</button>
+						</div>
+					</div>`
+
+				html += comment;
+				})
+				const container = document.getElementById('commentContainer');
+				container.innerHTML = html;
+			}
+
+			function getComments() {
+				fetch("http://localhost:3000/comments")
+					.then(function (response) {
+						// The API call was successful!
+						return response.json();
+					})
+					.then(function (data) {
+						console.log(data);
+						renderComments(data);
+
+						// This is the JSON from our response
+						// console.log(data);
+					})
+					.catch(function (err) {
+						// There was an error
+						console.warn("Something went wrong.", err);
+					});
+			}
+
+			function postComment() {
+				const text = document.getElementById('input');
+				fetch('http://localhost:3000/comments', {
+					method: 'POST',
+					mode: 'cors',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({text: text.value})
+				}).then(f => {
+					console.log(f);
+					text.value = "";
+					location.reload();
+				})
+			}
+
+			function upvoteComment(id) {
+				console.log(id);
+				fetch('http://localhost:3000/comments', {
+					method: 'PATCH',
+					mode: 'cors',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ id })
+				}).then(f => console.log(f))
+			}
+
+			getComments();
+		</script>
 		<title></title>
 	</head>
 	<body>
@@ -31,17 +115,19 @@
 						</div>
 						<div class="input__textfield">
 							<input
+								id="input"
 								placeholder="What are your thoughts?"
 								class="input__field"
 							/>
 						</div>
 						<div class="input__button-container">
-							<button class="input__button">Comment</button>
+							<button class="input__button" onclick="postComment()">Comment</button>
 						</div>
+
 					</div>
 				</div>
-				<div class="comments">
-					<div class="comments-container">
+				<div class="comments" id="commentContainer">
+					<!-- <div class="comments-container">
 						<div class="comment__header">
 							<div class="comment__header-avatar">
 								<div class="comment__image-container">
@@ -61,9 +147,9 @@
 					<div class="comment__text">
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-							provident neque at facere ratione quaerat cumque dicta nulla. Earum
-							rerum sunt nostrum deleniti qui. Nostrum repellendus odit quis
-							impedit possimus.
+							provident neque at facere ratione quaerat cumque dicta nulla.
+							Earum rerum sunt nostrum deleniti qui. Nostrum repellendus odit
+							quis impedit possimus.
 						</p>
 					</div>
 					<div class="comment__actions">
@@ -92,9 +178,9 @@
 					<div class="comment__text">
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-							provident neque at facere ratione quaerat cumque dicta nulla. Earum
-							rerum sunt nostrum deleniti qui. Nostrum repellendus odit quis
-							impedit possimus.
+							provident neque at facere ratione quaerat cumque dicta nulla.
+							Earum rerum sunt nostrum deleniti qui. Nostrum repellendus odit
+							quis impedit possimus.
 						</p>
 					</div>
 					<div class="comment__actions">
@@ -123,9 +209,9 @@
 					<div class="comment__text">
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-							provident neque at facere ratione quaerat cumque dicta nulla. Earum
-							rerum sunt nostrum deleniti qui. Nostrum repellendus odit quis
-							impedit possimus.
+							provident neque at facere ratione quaerat cumque dicta nulla.
+							Earum rerum sunt nostrum deleniti qui. Nostrum repellendus odit
+							quis impedit possimus.
 						</p>
 					</div>
 					<div class="comment__actions">
@@ -154,9 +240,9 @@
 					<div class="comment__text">
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-							provident neque at facere ratione quaerat cumque dicta nulla. Earum
-							rerum sunt nostrum deleniti qui. Nostrum repellendus odit quis
-							impedit possimus.
+							provident neque at facere ratione quaerat cumque dicta nulla.
+							Earum rerum sunt nostrum deleniti qui. Nostrum repellendus odit
+							quis impedit possimus.
 						</p>
 					</div>
 					<div class="comment__actions">
@@ -185,9 +271,9 @@
 					<div class="comment__text">
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-							provident neque at facere ratione quaerat cumque dicta nulla. Earum
-							rerum sunt nostrum deleniti qui. Nostrum repellendus odit quis
-							impedit possimus.
+							provident neque at facere ratione quaerat cumque dicta nulla.
+							Earum rerum sunt nostrum deleniti qui. Nostrum repellendus odit
+							quis impedit possimus.
 						</p>
 					</div>
 					<div class="comment__actions">
@@ -216,9 +302,9 @@
 					<div class="comment__text">
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-							provident neque at facere ratione quaerat cumque dicta nulla. Earum
-							rerum sunt nostrum deleniti qui. Nostrum repellendus odit quis
-							impedit possimus.
+							provident neque at facere ratione quaerat cumque dicta nulla.
+							Earum rerum sunt nostrum deleniti qui. Nostrum repellendus odit
+							quis impedit possimus.
 						</p>
 					</div>
 					<div class="comment__actions">
@@ -227,8 +313,8 @@
 							<button class="comment__button">Reply</button>
 						</div>
 					</div>
+				</div> -->
 				</div>
-				
 			</div>
 		</div>
 	</body>
