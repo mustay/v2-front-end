@@ -29,6 +29,28 @@
 		<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 
 		<script type="text/babel">
+			document.addEventListener("ui-loaded", function () {
+				class Button extends React.Component {
+					render() {
+						return (
+							<button
+								class="comment__button"
+								onClick={() => upvoteComment(this.props.id)}
+							>
+								&#9650; Upvote
+							</button>
+						);
+					}
+				}
+
+				const upvote = document.getElementsByClassName("upvote");
+				console.log(upvote);
+				for (let i = 0; i < upvote.length; i++) {
+					ReactDOM.render(<Button id={upvote[i].dataset.id} />, upvote[i]);
+				}
+			});
+			var event = new CustomEvent("ui-loaded", { "detail": "" });
+
 			function renderComments(data) {
 				let html = ``;
 				data.forEach((f) => {
@@ -67,30 +89,13 @@
 
 				const container = document.getElementById("commentContainer");
 				container.innerHTML = html;
+				document.dispatchEvent(event);
 			}
 
-			window.addEventListener("load", function () {
-				class Button extends React.Component {
-					render() {
-						return (
-							<button
-								class="comment__button"
-								onClick={() => upvoteComment(this.props.id)}
-							>
-								&#9650; Upvote
-							</button>
-						);
-					}
-				}
-
-				const upvote = document.getElementsByClassName("upvote");
-				for (let i = 0; i < upvote.length; i++) {
-					ReactDOM.render(<Button id={upvote[i].dataset.id} />, upvote[i]);
-				}
-			});
+			
 
 			function getComments() {
-				fetch("http://localhost:3000/comments")
+				fetch("http://137.184.110.104/comments")
 					.then(function (response) {
 						return response.json();
 					})
@@ -104,7 +109,7 @@
 
 			function postComment() {
 				const text = document.getElementById("input");
-				fetch("http://localhost:3000/comments", {
+				fetch("http://137.184.110.104/comments", {
 					method: "POST",
 					mode: "cors",
 					headers: { "Content-Type": "application/json" },
@@ -116,7 +121,7 @@
 			}
 
 			function upvoteComment(id) {
-				fetch("http://localhost:3000/comments", {
+				fetch("http://137.184.110.104/comments", {
 					method: "PATCH",
 					mode: "cors",
 					headers: { "Content-Type": "application/json" },
@@ -125,6 +130,8 @@
 			}
 
 			getComments();
+
+			
 		</script>
 		<title></title>
 	</head>
