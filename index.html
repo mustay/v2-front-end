@@ -18,16 +18,20 @@
 		/>
 		<link rel="stylesheet" type="text/css" href="styles.css" />
 		<script async src="/script.js"></script>
-		<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-		<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+		<script
+			src="https://unpkg.com/react@18/umd/react.production.min.js"
+			crossorigin
+		></script>
+		<script
+			src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+			crossorigin
+		></script>
 		<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 
-		
-
 		<script type="text/babel">
-			function renderComments(data) { 
+			function renderComments(data) {
 				let html = ``;
-				data.forEach(f => {
+				data.forEach((f) => {
 					const comment = `<div class="comments-container">
 						<div class="comment__header">
 							<div class="comment__header-avatar">
@@ -52,30 +56,38 @@
 					</div>
 					<div class="comment__actions">
 						<div>
-							<span id="upvote"></span>
+							<span class="upvote-text">${f.upvotes}</span>
+							<span class="upvote" data-id=${f.id}></span>
 							<button class="comment__button">Reply</button>
 						</div>
-					</div>`
+					</div>`;
 
-				html += comment;
-				})
-				// <button class="comment__button" onclick="upvoteComment('${f.id}')">&#9650; Upvote</button>
+					html += comment;
+				});
 
-				const container = document.getElementById('commentContainer');
+				const container = document.getElementById("commentContainer");
 				container.innerHTML = html;
-				class ResCaption extends React.Component{
+			}
+
+			window.addEventListener("load", function () {
+				class Button extends React.Component {
 					render() {
-						return(
-							<button class="comment__button" onClick={() => upvoteComment('asd')}>&#9650; Upvote</button>
-						)
+						return (
+							<button
+								class="comment__button"
+								onClick={() => upvoteComment(this.props.id)}
+							>
+								&#9650; Upvote
+							</button>
+						);
 					}
-			}
+				}
 
-			const upvote = document.getElementById('upvote');
-			ReactDOM.render(<ResCaption/>, upvote);
-			}
-
-			
+				const upvote = document.getElementsByClassName("upvote");
+				for (let i = 0; i < upvote.length; i++) {
+					ReactDOM.render(<Button id={upvote[i].dataset.id} />, upvote[i]);
+				}
+			});
 
 			function getComments() {
 				fetch("http://localhost:3000/comments")
@@ -91,41 +103,28 @@
 			}
 
 			function postComment() {
-				const text = document.getElementById('input');
-				fetch('http://localhost:3000/comments', {
-					method: 'POST',
-					mode: 'cors',
-					headers: {'Content-Type': 'application/json'},
-					body: JSON.stringify({text: text.value})
-				}).then(f => {
-					console.log(f);
+				const text = document.getElementById("input");
+				fetch("http://localhost:3000/comments", {
+					method: "POST",
+					mode: "cors",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ text: text.value }),
+				}).then((f) => {
 					text.value = "";
 					location.reload();
-				})
+				});
 			}
 
 			function upvoteComment(id) {
-				fetch('http://localhost:3000/comments', {
-					method: 'PATCH',
-					mode: 'cors',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ id })
-				}).then(f => console.log(f))
+				fetch("http://localhost:3000/comments", {
+					method: "PATCH",
+					mode: "cors",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ id }),
+				}).then((f) => location.reload());
 			}
 
 			getComments();
-		</script>
-		<script type = "text/babel">
-			// class ResCaption extends React.Component{
-			// 	render(){
-			// 		return(
-			// 			<div>asd</div>
-			// 		)
-			// 	}
-			// }
-
-			// const upvote = document.getElementById('upvote');
-			// ReactDOM.render(<ResCaption/>, upvote);
 		</script>
 		<title></title>
 	</head>
@@ -146,9 +145,10 @@
 							/>
 						</div>
 						<div class="input__button-container">
-							<button class="input__button" onclick="postComment()">Comment</button>
+							<button class="input__button" onclick="postComment()">
+								Comment
+							</button>
 						</div>
-
 					</div>
 				</div>
 				<div class="comments" id="commentContainer">

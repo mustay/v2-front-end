@@ -140,6 +140,10 @@ input {
     border-radius: 10px;
 } */
 
+.upvote-text {
+	font-size: 12px;
+}
+
 .comments::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 100px 1px 6px #e5e5e5; 
