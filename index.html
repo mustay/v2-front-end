@@ -95,7 +95,7 @@
 			
 
 			function getComments() {
-				fetch("http://137.184.110.104/comments")
+				fetch("https://discussion.genboota.com/comments")
 					.then(function (response) {
 						return response.json();
 					})
@@ -109,7 +109,7 @@
 
 			function postComment() {
 				const text = document.getElementById("input");
-				fetch("http://137.184.110.104/comments", {
+				fetch("https://discussion.genboota.com/comments", {
 					method: "POST",
 					mode: "cors",
 					headers: { "Content-Type": "application/json" },
@@ -121,7 +121,7 @@
 			}
 
 			function upvoteComment(id) {
-				fetch("http://137.184.110.104/comments", {
+				fetch("https://discussion.genboota.com/comments", {
 					method: "PATCH",
 					mode: "cors",
 					headers: { "Content-Type": "application/json" },
